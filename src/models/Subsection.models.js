@@ -1,6 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 
-const subsectionSchema = Schema({
+const subsectionSchema = new Schema({
 
     title: {
         type: String,

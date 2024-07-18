@@ -1,7 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 import { Subsection } from "./Subsection.models";
 
-const sectionSchema = Schema({
+const sectionSchema = new Schema({
 
     sectionName: {
         type: String,

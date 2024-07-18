@@ -1,6 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 
-const profileSchema = Schema({
+const profileSchema = new Schema({
 
     gender: {
         type: String,

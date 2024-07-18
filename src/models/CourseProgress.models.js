@@ -1,6 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 
-const courseProgessSchema = Schema({
+const courseProgessSchema = new Schema({
 
     courseID: {
         type: mongoose.Types.ObjectId,
