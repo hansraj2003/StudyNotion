@@ -6,6 +6,8 @@ import otpGenerator from "otp-generator"
 import bcrypt from "bcrypt"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { Profile } from "../models/Profile.models.js"
+import { mailSender } from "../utils/mailSender.js"
+import jwt from "jsonwebtoken"
 
 // sendOTP
 const sendOTP = asyncHandler(async (req, res) => {
@@ -140,12 +142,99 @@ const signUp = asyncHandler(async(req, res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User Registered Successfully")
     )
+})
 
+// login
+const login = asyncHandler(async (req, res) => {
+    // fetch email and password from req body
+    const {email, password} = req.body
 
+    if(!(email || password)) {
+        throw new ApiError(403, "All fields are required")
+    }
 
+    // validate both of them
+    const user = await User.findOne({email});
+    // const findUserWithPassword = await User.findOne({email});
+
+    // if email does not exist
+    if (!user) {
+        throw new ApiError(403, "User does not exists, please signup");
+    }
+
+    
+    // if not validated, email or passsword does not match
+    const decryptedPassword = await bcrypt.compare(password, user.password)
+
+    if(!decryptedPassword) {
+        throw new ApiError(403, "Invalid User Credentials")
+    }
+
+    // Creating JWT
+    const payload = {
+        _id: user._id,
+        email: user.email,
+        accountType: user.accountType,
+    }
+    const token = jwt.sign(payload, process.env.TOKEN_SECRET, {
+        expiresIn: process.env.TOKEN_EXPIRY,
+    })
+
+    // feeding token in user
+    user.token = token;
+    user.password = null;
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        expiresIn: new Date(Date.now() + 3*24*60*60*1000),
+    }
+
+    return res
+    .status(200)
+    .cookie("token", token, options)
+    .json(
+        new ApiResponse(200, {
+            user, token
+        }, "User Logged In Successfully")
+    )
+})
+
+// Change Password
+const changePassword = asyncHandler(async(req, res) => {
+    // fetch data for req body
+    const {email, password, newPassword, confirmNewPassword} = req.body
+
+    // get old Password, new Password, confirm new Password
+    const user = await User.findOne({email})
+
+    // validate
+    const decryptedPassword = await bcrypt.compare(password, user.password)
+    if(!decryptedPassword) {
+        throw new ApiError(403, "Invalid old password")
+    }
+
+    if (newPassword != confirmNewPassword) {
+        throw new ApiError(403, "New password and Confirm New Password does not match, Try Again")
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    // update password in DB
+    user.password = hashedPassword;
+
+    // send mail - password Updated
+    await mailSender(email, "Password Updated", `Your password for StudyNotion is updated on ${new Date(new Date().toLocaleString()).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}).replace(',', " at")}. If you have not dont it, we request you to change your password immediately.`)
+
+    // return response
+    return res.status(200).json(
+        new ApiResponse(200, hashedPassword, "Password Updated Successfully")
+    )
 })
 
 export {
     sendOTP,
     signUp,
+    login,
+    changePassword,
 }

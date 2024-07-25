@@ -46,6 +46,12 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "courseProgress",
     },
+    token: {
+        type: String,
+    },
+    expiresIn: {
+        type: Date,
+    }
 },{
     timestamps: true
 })
