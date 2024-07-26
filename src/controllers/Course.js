@@ -92,7 +92,7 @@ const createCourse = asyncHandler(async(req, res) => {
 
 // get all courses
 const allCourses = asyncHandler(async(req, res) => {
-    const courseDetails = await Course.find().select("-courseDescription -whatYouWillLearn -courseContent -tag");
+    const courseDetails = await Course.find().select("-courseDescription -whatYouWillLearn -courseContent -tag").populate("Instructor").exec();
 
     if(!courseDetails) {
         throw new ApiError(500, "Error while fetching course details");
