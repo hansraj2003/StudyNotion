@@ -9,11 +9,11 @@ const tagsSchema = new Schema({
     description: {
         type: String,
     },
-    course: {
+    course: [{
         type: mongoose.Types.ObjectId,
         ref: "Course",
         required: true,
-    }
+    }]
 
 },{
     timestamps: true,
