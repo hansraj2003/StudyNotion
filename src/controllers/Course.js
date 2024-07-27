@@ -1,5 +1,5 @@
 import { Course } from "../models/Course.models.js";
-import { Tags } from "../models/Tags.models.js";
+import { Category } from "../models/Category.models.js";
 import { User } from "../models/User.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -9,22 +9,22 @@ import { uploadImage } from "../utils/cloudinary.js";
 // Create Course
 const createCourse = asyncHandler(async(req, res) => {
     // fetch Data
-    const {courseName, price, thumbnail, tag, whatYouWillLearn} = req.body
+    const {courseName, price, thumbnail, category, whatYouWillLearn} = req.body
 
     const thumbnailImage = req.files?.thumbnail;
 
     // validate
 
-    if(!(courseName || price || thumbnail || tag || whatYouWillLearn || thumbnailImage)) {
+    if(!(courseName || price || thumbnail || category || whatYouWillLearn || thumbnailImage)) {
         throw new ApiError(401, "All fields are requied")
     }
 
-    // Check Tag is valid or not
+    // Check category is valid or not
 
-    const tagDetails = await Tags.findById(tag).select("-description -course")
+    const CategoryDetails = await Category.findById(category).select("-description -course")
 
-    if(!tagDetails) {
-        throw new ApiError(401, "Tag Details not found")
+    if(!CategoryDetails) {
+        throw new ApiError(401, "Category Details not found")
     }
 
     // is Instructor
@@ -48,7 +48,7 @@ const createCourse = asyncHandler(async(req, res) => {
         Instructor: instructorDetails._id,
         price,
         thumbnail: thumbnailUpload?.url,
-        tag,
+        category,
     })
 
     const createdCourse = await Course.findById(newCourse?._id)
@@ -73,8 +73,8 @@ const createCourse = asyncHandler(async(req, res) => {
     }
 
     // add course into Tag Schema
-    await Tags.findByIdAndUpdate(
-        tagDetails?._id,
+    await Category.findByIdAndUpdate(
+        CategoryDetails?._id,
         {
             $push:{
                 course: newCourse?._id,
@@ -92,7 +92,7 @@ const createCourse = asyncHandler(async(req, res) => {
 
 // get all courses
 const allCourses = asyncHandler(async(req, res) => {
-    const courseDetails = await Course.find().select("-courseDescription -whatYouWillLearn -courseContent -tag").populate("Instructor").exec();
+    const courseDetails = await Course.find().select("-courseDescription -whatYouWillLearn -courseContent -category").populate("Instructor").exec();
 
     if(!courseDetails) {
         throw new ApiError(500, "Error while fetching course details");

@@ -1,10 +1,10 @@
-import { Tags } from "../models/Tags.models";
+import { Category } from "../models/Category.models";
 import { ApiError } from "../utils/ApiError"
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler"
 
-//Create Tag
-const Tag = asyncHandler(async (req, res) => {
+//Create Category
+const Category = asyncHandler(async (req, res) => {
     try {
         // fetch data from req body
         const {name, description} = req.body
@@ -19,45 +19,45 @@ const Tag = asyncHandler(async (req, res) => {
         }
     
         // create entry in DB
-        const tagDetails = await Tags.create({
+        const CategoryDetails = await Category.create({
             name: name,
             description: description,
         })
-        console.log("Tag Details are: ", tagDetails);
+        console.log("Category Details are: ", CategoryDetails);
     
         return res
         .status(200)
         .json(
-            new ApiResponse(200, tagDetails,"Tag Created Successfully")
+            new ApiResponse(200, CategoryDetails,"Category Created Successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error while creating Tag", error)
+        throw new ApiError(500, "Error while creating Category", error)
     }
 })
 
-// Show All Tags
-const showAllTags = asyncHandler(async(req, res) => {
+// Show All Category
+const showAllCategory = asyncHandler(async(req, res) => {
     try {
 
-        const allTags = await Tags.findOne({}, {
+        const allCategory = await Category.findOne({}, {
             name: true,
             description: true,
         })
 
-        if(!allTags) {
-            throw new ApiError(500, "Tags cannot be loaded")
+        if(!allCategory) {
+            throw new ApiError(500, "Category cannot be loaded")
         }
 
         return res.status(200).json(
-            new ApiResponse(200, allTags, "Tags loaded successfully")
+            new ApiResponse(200, allCategory, "Category loaded successfully")
         )
 
     } catch (error) {
-        throw new ApiError(500, "Eror while showing all the tags", error)
+        throw new ApiError(500, "Eror while showing all the Category", error)
     }
 })
 
 export {
-    Tag,
+    Category,
 
 }
