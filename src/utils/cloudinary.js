@@ -1,6 +1,6 @@
 import {v2 as cloudinary} from "cloudinary"
 
-const uploadImage = async(files, folder, height, quality) => {
+const uploadImage = async(file, folder, height, quality) => {
 
     const options = {folder}
     console.log("Options in cloudinary: ", options);
