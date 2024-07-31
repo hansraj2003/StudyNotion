@@ -103,7 +103,50 @@ const allCourses = asyncHandler(async(req, res) => {
     )
 })
 
+// get course details
+const getCourseDetails = asyncHandler(async (req, res) => {
+    // get courseId
+    const {courseId} = req.body
+
+    // validate
+    if(!courseId) {
+        throw new ApiError(500, "Course ID is not present", error?.message)
+    }
+
+    // fetch courseDetails
+    const courseDetails = await Course.findById(courseId)
+    .populate(
+        {
+            path: "instructor",
+            populate: {
+                path: "additionalDetails",
+            },
+        },
+    )
+    .populate("category")
+    .populate("ratingAndReviews")
+    .populate(
+        {
+            path: "courseContent",
+            populate: {
+                path: "Subsection",
+            },
+        },
+    )
+    .exec()
+
+    if(!courseDetails) {
+        throw new ApiError(500, "Course Details Not Found", error?.message)
+    }
+
+    // return res
+    return res.status(200).json(
+        new ApiResponse(200, courseDetails, "Course Details Fetched Successfully")
+    )
+})
+
 export {
     createCourse,
-
+    allCourses,
+    getCourseDetails,
 }

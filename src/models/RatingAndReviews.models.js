@@ -14,7 +14,11 @@ const ratingAndReviewsSchema = new Schema({
     reviews: {
         type: String,
         required: true,
-    }
+    },
+    course: {
+        type: mongoose.Types.ObjectId,
+        ref: "Course",
+    } 
 
 },{
     timestamps: true,

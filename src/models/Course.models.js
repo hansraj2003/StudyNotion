@@ -45,8 +45,16 @@ const courseSchema = new Schema({
         ref: "User",
         required: true,
     },
-    tag : {
+    tag : [{
+        type: [String],
+        required: true,
+    }],
+    instructions: {
+        type: [String],
+    },
+    status: {
         type: String,
+        enum: ["Draft", "Published"],
     }
 
 },{
