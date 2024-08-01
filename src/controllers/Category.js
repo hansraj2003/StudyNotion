@@ -1,10 +1,11 @@
 import { Category } from "../models/Category.models";
+import { Course } from "../models/Course.models";
 import { ApiError } from "../utils/ApiError"
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler"
 
 //Create Category
-const Category = asyncHandler(async (req, res) => {
+const category = asyncHandler(async (req, res) => {
     try {
         // fetch data from req body
         const {name, description} = req.body
@@ -57,7 +58,43 @@ const showAllCategory = asyncHandler(async(req, res) => {
     }
 })
 
-export {
-    Category,
+// categoryPageDetails
+const categoryPageDetails = asyncHandler(async (req, res) => {
+    // get categoryId
+    const {categoryId} = req.body
 
+    // get courses from specified categoryId
+    const selectedCategory = await Category.findById(categoryId).populate("course").exec()
+
+    if(!selectedCategory) {
+        throw new ApiError(404, "Category Not Found", error?.message)
+    }
+
+    // get course for different categories
+    const courseForDifferentCategory =  await Category.findById(
+        {
+            $ne:{_id: categoryId},
+        }
+    ).populate("courses").exec()
+
+    // get top selling courses
+    const topSellingCourse = await Course.find({}).sort({studentsEnrolled: "desc"})
+
+
+    return res.status(200).json(
+        new ApiResponse(200, 
+            {
+                selectedCategory: selectedCategory,
+                courseForDifferentCategory: courseForDifferentCategory,
+                topSellingCourse: topSellingCourse,
+            },
+            "All courses of particular category fetched successfully"
+        )
+    )
+})
+
+export {
+    category,
+    showAllCategory,
+    categoryPageDetails,
 }

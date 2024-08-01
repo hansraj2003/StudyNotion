@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import { Course } from "../models/Course.models"
 import { RatingAndReviews } from "../models/RatingAndReviews.models"
 import { User } from "../models/User.models"
@@ -86,3 +87,86 @@ const createRatingAndReviews = asyncHandler( async (req, res) => {
         new ApiResponse(200, {createdRatingAndReviews, updatedCourse }, "Reviews and Rating Created Successfully")
     )
 })
+
+// get average rating
+const getAverageRating = asyncHandler(async (req, res) => {
+    // get courseId
+    const courseId = req.body.courseId
+
+    // calculate ratings
+    const result = await RatingAndReviews.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(courseId),
+            },
+        },
+        {
+            $group: {
+                _id: null,
+                averageRating: { $avg: "$rating"}
+            }
+        }
+    ])
+    // return ratings
+    if(result.length > 0) {
+        new ApiResponse(200, 
+            {
+                averageRating: result[0].averageRating,
+                result: result,
+            },
+            "Average Ratings calculated successfully"
+        )
+    }
+
+    // if not ratings
+    new ApiResponse(200,
+        {
+            averageRating: 0,
+        },
+        "No User rated this course",
+    )
+})
+
+// get all ratings
+const getAllRating = asyncHandler( async (req, res) => {
+    // const userId = req.user.id
+
+    const allRatings = await RatingAndReviews.find(
+        {
+            // $match: {
+            //     user: new mongoose.Types.ObjectId(userId),
+            // }
+        }
+    ).sort({rating: "desc"})
+    .populate(
+        {
+            $path: "course",
+            select: "courseName"
+        }
+    ).populate(
+        {
+            $path: "user",
+            select: "firstName lastName email image"
+        }
+    )
+    .exec()
+
+    if(!allRatings) {
+        throw new ApiError(500, "User has not rated and reviews the course yet", error?.message)
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,
+            {
+                allRatings: allRatings,
+            },
+            "User ratings and reviews fetched successfully"
+        )
+    )
+})
+
+export {
+    createRatingAndReviews,
+    getAverageRating,
+    getAllRating,
+}
