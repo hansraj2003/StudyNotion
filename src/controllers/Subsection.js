@@ -1,9 +1,9 @@
-import { Section } from "../models/Section.models";
-import { Subsection } from "../models/Subsection.models";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
-import { uploadImage } from "../utils/cloudinary";
+import { Section } from "../models/Section.models.js";
+import { Subsection } from "../models/Subsection.models.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { uploadImage } from "../utils/cloudinary.js";
 
 
 

@@ -1,5 +1,5 @@
 import mongoose, {Schema} from "mongoose";
-import { Subsection } from "./Subsection.models";
+import { Subsection } from "./Subsection.models.js";
 
 const sectionSchema = new Schema({
 

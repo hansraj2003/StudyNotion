@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
-import { Course } from "../models/Course.models"
-import { RatingAndReviews } from "../models/RatingAndReviews.models"
-import { User } from "../models/User.models"
-import { ApiError } from "../utils/ApiError"
-import { ApiResponse } from "../utils/ApiResponse"
-import {asyncHandler} from "../utils/asyncHandler"
+import { Course } from "../models/Course.models.js"
+import { RatingAndReviews } from "../models/RatingAndReviews.models.js"
+import { User } from "../models/User.models.js"
+import { ApiError } from "../utils/ApiError.js"
+import { ApiResponse } from "../utils/ApiResponse.js"
+import {asyncHandler} from "../utils/asyncHandler.js"
 
 
 

@@ -1,12 +1,12 @@
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
-import { mailSender } from "../utils/mailSender";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { mailSender } from "../utils/mailSender.js";
 
 
 
 // Contact Us
-const contactUs = asyncHandler(async (req, res) => {
+export const contactUs = asyncHandler(async (req, res) => {
     // fetch details
     const {firstName, lastName, email, phoneNumber, message} = req.body
     const userId = req.user.id

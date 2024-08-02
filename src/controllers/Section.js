@@ -1,9 +1,9 @@
-import { User } from "../models/User.models";
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
-import { Section } from "../models/Section.models";
-import { Course } from "../models/Course.models";
-import { ApiResponse } from "../utils/ApiResponse";
+import { User } from "../models/User.models.js";
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { Section } from "../models/Section.models.js";
+import { Course } from "../models/Course.models.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 
 // create Section
