@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 
-const cloudinaryConnect = asyncHandler(async(req, res) => {
+const cloudinaryConnect = async(req, res) => {
     try {
         cloudinary.config(
             {
@@ -14,7 +14,7 @@ const cloudinaryConnect = asyncHandler(async(req, res) => {
     } catch (error) {
         throw new ApiError(500, "Cloudinary cannot be configured", error)
     }
-})
+}
 
 export {
     cloudinaryConnect,

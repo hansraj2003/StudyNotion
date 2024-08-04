@@ -3,11 +3,7 @@ import { app } from "./app.js";
 import dotenv from "dotenv";
 import { cloudinaryConnect } from "./config/cloudinary.js";
 
-dotenv.config({
-    path: './.env'
-});
-
-// const app = express();
+dotenv.config();
 
 // ************************************************* DB CONNECTION ***********************************************
 connectDB()

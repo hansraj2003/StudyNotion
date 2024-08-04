@@ -25,7 +25,7 @@ const resetPasswordToken = asyncHandler(async(req, res) => {
         // update user by adding token and expiration time
         const updatedDetails = await User.findOneAndUpdate({email}, {
             token: token,
-            expiresIn: new Date.now() + 5*60*1000,
+            expiresIn: Date.now() + 5*60*1000,
         },
         {new: true})  /* this new means new document will be saved in that variable if new is not set to true then variable will refer to old doc*/
     

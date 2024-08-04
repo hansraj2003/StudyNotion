@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { instance } from "../config/razorpay.js";
+// import { instance } from "../config/razorpay.js";
+import instance from "../config/razorpay.js";
 import { Course } from "../models/Course.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";

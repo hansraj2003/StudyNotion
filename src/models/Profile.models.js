@@ -16,9 +16,9 @@ const profileSchema = new Schema({
     contactNumber: {
         type: Number,
         trim: true,
-        index: true,
+        // index: true,
         unique: true,
-        required: true,
+        // required: true,
     }
 
 }, {

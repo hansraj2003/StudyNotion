@@ -13,10 +13,10 @@ const router = Router()
 // **********************************************************************************************************
 
 // Course can only be created by instructor
-router.post("/create-course", auth, isInstructor, createCourse)
+router.post("/createCourse", auth, isInstructor, createCourse)
 
 // create section route
-router.post("/add-section", auth, isInstructor, section)
+router.post("/addSection", auth, isInstructor, section)
 
 // create subsection route
 router.post("/add-subsection", auth, isInstructor, subSection)
@@ -25,11 +25,11 @@ router.post("/add-subsection", auth, isInstructor, subSection)
 router.put("/update-subsection", auth, isInstructor, updateSubsection)
 
 // update section route
-router.put("/update-section", auth, isInstructor, updateSection)
+router.put("/updateSection", auth, isInstructor, updateSection)
 
 router.delete("/delete-subsection", auth, isInstructor, deleteSubsection)
 
-router.delete("/delete-section", auth, isInstructor, deleteSection)
+router.delete("/deleteSection", auth, isInstructor, deleteSection)
 
 router.get("/getAllCourses", allCourses)
 
@@ -41,7 +41,7 @@ router.post("/getCourseDetails", getCourseDetails)
 // **********************************************************************************************************
 
 router.post("/createCategory", auth, isAdmin, category)
-router.get("/showAllCategory", showAllCategory)
+router.get("/showAllCategories", showAllCategory)
 router.post("/categoryPageDetails", categoryPageDetails)
 
 // **********************************************************************************************************

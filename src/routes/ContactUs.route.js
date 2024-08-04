@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { contactUs } from "../controllers/ContactUs.js";
+import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 

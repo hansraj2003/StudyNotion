@@ -9,7 +9,7 @@ const OTPSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true,
+        // unique: true,
     },
     otp: {
         type: String,

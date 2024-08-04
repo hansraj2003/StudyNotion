@@ -6,6 +6,7 @@ import profileRoutes from "./routes/Profile.route.js"
 import courseRoutes from "./routes/Course.route.js"
 import paymentRoutes from "./routes/Payment.route.js"
 import contactUsRoutes from "./routes/ContactUs.route.js"
+import fileUpload from "express-fileupload"
 
 
 const app = express()
